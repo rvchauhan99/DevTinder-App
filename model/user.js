@@ -3,11 +3,17 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true
+        required: true,
+        minLength: 3,
+        maxLength: 20
+
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
+        minLength: 3,
+        maxLength: 20
+
     },
     emailID: {
         type: String,
@@ -20,7 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     age : {
         type : Number,
-        required : true
+        
     },
     gender : {
 

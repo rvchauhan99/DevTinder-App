@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        #chat-container {
+            width: 50%;
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        #messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .message {
+            padding: 5px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .sent {
+            background-color: #d1e7dd;
+            text-align: right;
+        }
+        .received {
+            background-color: #f8d7da;
+            text-align: left;
+        }
+        #message-input {
+            width: 70%;
+            padding: 8px;
+        }
+        #send-button {
+            padding: 8px 15px;
+            background: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Chat Application</h1>
+    <div id="chat-container">
+        <h3>Chatting as: <span id="sender-name"></span></h3>
+        <h4>Talking to: <span id="receiver-name"></span></h4>
+        
+        <div id="messages"></div>
+
+        <input type="text" id="message-input" placeholder="Type a message...">
+        <button id="send-button">Send</button>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const params = new URLSearchParams(window.location.search);
+        const sender = params.get("sender") || "Anonymous";
+        const receiver = params.get("receiver") || "Anonymous";
+
+        document.getElementById("sender-name").innerText = sender;
+        document.getElementById("receiver-name").innerText = receiver;
+
+        // Connect to Socket.io server
+        const socket = io("http://localhost:5141");
+
+        // Join the private chat room (Backend will generate room ID)
+        socket.emit("joinChat", { sender, receiver });
+
+        // Send message when the button is clicked
+        document.getElementById("send-button").addEventListener("click", function () {
+            const messageInput = document.getElementById("message-input");
+            const text = messageInput.value.trim();
+
+            if (text) {
+                // Emit "sendMessage" event
+                socket.emit("sendmessage", { sender, receiver, text });
+
+                // Show sent message in the chat window
+                displayMessage(sender, text, "sent");
+                
+                messageInput.value = ""; // Clear input field
+            }
+        });
+
+        // Listen for "receiveMessage" event
+        socket.on("recieveMessage", function (data) {
+            displayMessage(data.sender, data.text, "received");
+        });
+
+        // Function to display messages
+        function displayMessage(user, text, type) {
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("message", type);
+            messageDiv.innerHTML = `<strong>${user}:</strong> ${text}`;
+            document.getElementById("messages").appendChild(messageDiv);
+        }
+    </script>
+
+</body>
+</html>

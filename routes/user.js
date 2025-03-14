@@ -8,6 +8,9 @@ const userControllers = require("../controllers/user");
 const router = express.Router();
 
 router.post("/signUp" ,userControllers.signUp);
+router.post("/login" ,userControllers.login);
+router.get("/profile" ,userControllers.getMyProfile);
+
 router.get("/userByEmail" ,userControllers.getUserByEmail);
 router.get("/" ,userControllers.getUsers);
 router.get("/feed" ,userControllers.getUsers);
