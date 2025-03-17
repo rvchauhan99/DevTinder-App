@@ -1,14 +1,15 @@
 const express = require("express");
 const user = require("./user");
-const auth = require("./auth");
-const fun = require("./fun");
+const request = require("./request");
+
 
 
 const router = express.Router()
 
 
 router.use("/user", user);
-router.use("/auth", auth);
+router.use("/", request);
+
 
 
 

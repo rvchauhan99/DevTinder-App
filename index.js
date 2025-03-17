@@ -9,6 +9,7 @@ const routes = require('./routes'); // Import all routes
 const ip = require("ip");
 const http = require("http");
 const socket = require("socket.io");;
+const cookieParser = require("cookie-parser");
 (async function () {
     console.log("Index File Called ");
     try {
@@ -21,6 +22,7 @@ const socket = require("socket.io");;
 
         app.use(cors());
         app.use(express.json());
+        app.use(cookieParser());
         app.use(routes);
 
         let server = http.createServer(app);
