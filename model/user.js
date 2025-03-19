@@ -18,11 +18,13 @@ const userSchema = new mongoose.Schema({
     emailID: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        // select : false
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        // select: false
     },
     age : {
         type : Number,
@@ -32,8 +34,17 @@ const userSchema = new mongoose.Schema({
 
         type: String,
         enum: ["male", "female", "other"],
-        message : "{VALUE} Invalid Gender"
+    
         
+    },
+    about : {
+        type : String,
+        trim : true,
+        default : `my name is ${this.firstName} ${this.lastName}`
+    },
+    profilePic : {
+        type : String,
+        default : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
     }
     
 

@@ -9,6 +9,12 @@ router.post("/signUp", controllers.signUp);
 router.post("/login", controllers.login);
 router.get("/profile", userAuth, controllers.getMyProfile);
 router.post("/logout", controllers.logout);
+router.get("/pendingRequests", userAuth, controllers.getPendingConnections);
+
+// router.get("/logout", controllers.logout);
+
+router.patch("/profile", userAuth , controllers.editProfile);
+
 
 
 

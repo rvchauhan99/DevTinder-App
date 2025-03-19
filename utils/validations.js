@@ -32,4 +32,24 @@ function validateSignup(req) {
     }
 
 }
-module.exports = { validateSignup }
+function validateEditProfile(req) {
+    console.log(req.body);
+    
+try {
+    
+
+    const allowedFields = ["firstName","lastName" ,"emailID" ,"age", "gender", "about", "profilePic"];
+
+    if(Object.keys(req.body).length == 0){
+        throw new Error("Minumum One Fields Is Required For Update");
+    }
+    if(Object.keys(req.body).every(key => !allowedFields.includes(key))){
+        throw new Error("Invalid Field");
+    }
+} catch (error) {
+    console.log(error.message);
+    
+    throw new Error("Something Went Wrong " + error.message);
+}
+}
+module.exports = { validateSignup , validateEditProfile }
